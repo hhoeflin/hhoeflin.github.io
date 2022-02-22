@@ -1,0 +1,1112 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
+    
+    
+      
+        <title>Nix in home - Holger Hoefling's homepage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e8d9bf0c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+  
+
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#nix-and-home-manager-in-custom-directory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Holger Hoefling&#39;s homepage" class="md-header__button md-logo" aria-label="Holger Hoefling's homepage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Holger Hoefling's homepage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Nix in home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Holger Hoefling&#39;s homepage" class="md-nav__button md-logo" aria-label="Holger Hoefling's homepage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Holger Hoefling's homepage
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Blog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Blog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1">
+          Nix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Nix" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Nix
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Nix in home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Nix in home
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nix-portable" class="md-nav__link">
+    Nix-portable
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-not-use-some-other-tool" class="md-nav__link">
+    Why not use some other tool?
+  </a>
+  
+    <nav class="md-nav" aria-label="Why not use some other tool?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#homebrew" class="md-nav__link">
+    Homebrew
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spack-or-easybuild" class="md-nav__link">
+    Spack or Easybuild
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-build-process" class="md-nav__link">
+    The build process
+  </a>
+  
+    <nav class="md-nav" aria-label="The build process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-environment-variables" class="md-nav__link">
+    Setting environment variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-flake" class="md-nav__link">
+    The flake
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flake-for-home-manager" class="md-nav__link">
+    Flake for home-manager
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-resources" class="md-nav__link">
+    Other resources
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2">
+          Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docker/bash_in_docker/" class="md-nav__link">
+        Bash in Docker
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../publications/" class="md-nav__link">
+        Publications
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hhoeflin.github.io/online-cv/" target=_blank"" class="md-nav__link">
+        CV
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.linkedin.com/in/holger-h%C3%B6fling-96590552/?originalSubdomain=ch" target=_blank"" class="md-nav__link">
+        Linkedin
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Packages
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Packages" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Packages
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_1">
+          mkreports
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mkreports" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          mkreports
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/hhoeflin/mkreports" target=_blank"" class="md-nav__link">
+        Github
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hhoeflin.github.io/mkreports/" target=_blank"" class="md-nav__link">
+        Docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://pypi.org/project/mkreports/" target=_blank"" class="md-nav__link">
+        Pypi
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_2">
+          hdf5r
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="hdf5r" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          hdf5r
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hhoeflin.github.io/hdf5r" target=_blank"" class="md-nav__link">
+        Manual
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/hhoeflin/hdf5r" target=_blank"" class="md-nav__link">
+        Source code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cran.r-project.org/web/packages/hdf5r/index.html" target=_blank"" class="md-nav__link">
+        CRAN
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nix-portable" class="md-nav__link">
+    Nix-portable
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-not-use-some-other-tool" class="md-nav__link">
+    Why not use some other tool?
+  </a>
+  
+    <nav class="md-nav" aria-label="Why not use some other tool?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#homebrew" class="md-nav__link">
+    Homebrew
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spack-or-easybuild" class="md-nav__link">
+    Spack or Easybuild
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-build-process" class="md-nav__link">
+    The build process
+  </a>
+  
+    <nav class="md-nav" aria-label="The build process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-environment-variables" class="md-nav__link">
+    Setting environment variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-flake" class="md-nav__link">
+    The flake
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flake-for-home-manager" class="md-nav__link">
+    Flake for home-manager
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#discussion" class="md-nav__link">
+    Discussion
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-resources" class="md-nav__link">
+    Other resources
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="nix-and-home-manager-in-custom-directory">Nix and Home-manager in custom directory</h1>
+<h2 id="introduction">Introduction</h2>
+<p>A few months ago I was looking for a way to create a setup for
+tools and software in my home-folder that was easy and fast to
+deploy in a new location. After some searching, I discovered
+<a href="https://nixos.org">Nix</a>
+and <a href="https://github.com/nix-community/home-manager">Home-Manager</a>.</p>
+<p>From their <a href="https://nixos.wiki/wiki/NixOS">wiki</a>,
+NixOS is a Linux distribution based on the Nix package manager and build system.
+It supports reproducible and declarative system-wide configuration management
+as well as atomic upgrades and rollbacks, although it can additionally support
+imperative package and user management.
+In NixOS, all components of the distribution — including the kernel,
+installed packages and system configuration files — are built by Nix
+from pure functions called Nix expressions.</p>
+<p>Home-Manager complements the Nix package manager by providing
+a system to manage a users configuration for the home folder.</p>
+<p>These tools have a relatively steep learning curve, but after a few months
+using it I have to say that it is very worth the investment of time. Nix
+is a very principled way to approach software deployment and its ideas
+provide a fresh perspective on how reproducible configuration of software
+can be done that provides multiple versions at the same time.</p>
+<h3 id="installation">Installation</h3>
+<p>Nix is very easy to install and instructions are provided on the homepage.
+However this is only true under the assumption that the user has <code>sudo</code>
+permissions or an administrator performs certain setup steps. If these conditions
+are not met, deploying nix is a lot trickier. In the rest of the post
+I will outline how to deploy nix using home-manager in the home folder without
+sudo.</p>
+<p>The biggest drawback of the route I have chosen is that the Nix binary
+cache does not work, which can mean long compile times when deploying new
+software (long can mean 10+ hours). This can be tricky when trying to install software ad-hoc,
+but for me is an ok tradeoff for deploying home-folder software where the
+setup changes much more slowly. Additionally, not every program works without
+error when compiled from scratch so that ocassionally an override patch
+is necessary.</p>
+<h4 id="nix-portable">Nix-portable</h4>
+<p><a href="https://github.com/DavHau/nix-portable">Nix-portable</a> is a wrapper
+that allows nix to be used in a users home folder without sudo permissions
+while still being able to use the binary cache. Please go the its website
+to read about some of the requirements and missing features of this approach.</p>
+<p>In my case, it does not support sufficient features to deploy a Home-Manager
+setup so that I decided not to use it.</p>
+<h3 id="why-not-use-some-other-tool">Why not use some other tool?</h3>
+<p>Before going into more details of the setup, I briefly wanted to talk about
+some of the other tools that could be used for similar purposes.</p>
+<h4 id="homebrew">Homebrew</h4>
+<p><a href="https://brew.sh/">Homebrew</a>, often called the missing package manager
+for MacOS (and later also linux), is a tool to easily install software
+in a user's home directory. Its big advantage is that it can be
+run without sudo and that a very large amount of packages is available
+for installation.</p>
+<p>It is a very good tool, however it does not provide the same level of
+independence of the host system as Nix does, so incompatibilities
+from one OS to the other can happen. Furthermore, it also does not
+a manager for home-folder configurations such as Home-Manager</p>
+<h4 id="spack-or-easybuild">Spack or Easybuild</h4>
+<p>Both <a href="https://spack.readthedocs.io/en/latest/">Spack</a> and
+<a href="https://docs.easybuild.io/en/latest/">Easybuild</a> are tools to install
+software on HPC systems. As such they have the ability to install
+multiple versions of the same software side by side and allow
+the user to activate them on-demand (e.g. by using environment modules).</p>
+<p>Both these systems are very sophisticated and are more targeted towards
+HPC admins than individual users. In general, availablility of packages
+and latest versions is lower than for Nix and they also
+don't provide a complete solution for managing the home-folder configurations.</p>
+<h2 id="the-build-process">The build process</h2>
+<p>Now let us move on to the actual installation process.</p>
+<h3 id="requirements">Requirements</h3>
+<p>It is necessary to have a linux distribution available with sudo permissions
+so that nix can be deployed as described in the user manual. In the
+following it is assumed that a nix installation is available with nix version &gt;= 2.4.</p>
+<h3 id="setting-environment-variables">Setting environment variables</h3>
+<p>In order to install in a custom location, it is possible to change
+the directories used by Nix with environment variables. These need
+to be sourced before the build process.</p>
+<div class="highlight"><span class="filename">nix_vars.sh</span><pre><span></span><code>
+</code></pre></div>
+<p>This corresponds to a nix installation where <code>storedir=${PREFIX}/nix/store</code>,
+<code>localstatedir=${PREFIX}/nix/var/</code> and <code>sysconfdir=${PREFIX}/nix/etc</code>, where
+<code>storedir</code>, <code>localstatedir</code> and <code>sysconfdir</code> are defined in the
+nix installation in nixpkgs defined in
+<a href="https://github.com/NixOS/nixpkgs/blob/master/pkgs/tools/package-management/nix/default.nix">nix/default.nix</a>
+and the details for the environment variables in
+<a href="https://github.com/NixOS/nix/blob/master/src/libstore/local.mk">local.mk</a></p>
+<h3 id="the-flake">The flake</h3>
+<p>At first for practice we write a flake for only compiling nix itself. In this
+flake we need to override some attributes in order to set the custom
+variables as well as add some patches (on linux, the sandbox test is broken
+for non-default directories, so we disable it). A basic flake could be</p>
+<div class="highlight"><span class="filename">flake.nix</span><pre><span></span><code>
+</code></pre></div>
+<p>with patch</p>
+<div class="highlight"><span class="filename">nix_patch_2_5.patch</span><pre><span></span><code>
+</code></pre></div>
+<p>With this flake, we can just build a version of nix with
+<code>nix build .#nix</code>.</p>
+<h2 id="flake-for-home-manager">Flake for home-manager</h2>
+<p>We also want to use this in home-manager of course. A minimal flake
+to set this up is below, together with a minimal <code>home.nix</code> that
+just requires <code>nix</code> itself and ensures the environment  variables
+are loaded in the profile. As of this writing, the current version
+of nix was 2.5.1.</p>
+<p><div class="highlight"><span class="filename">flake.nix</span><pre><span></span><code>
+</code></pre></div>
+As home-manager depends on nix-2.3, we also create a patch that disables
+sandbox testing for that version.</p>
+<div class="highlight"><span class="filename">nix_patch_2_3.patch</span><pre><span></span><code>
+</code></pre></div>
+<p>For defining the home-folder environment itself, we need a <code>home.nix</code> file
+that we import in the configuration. This one is quite minimal, defining
+<code>nix</code> itself as the only read dependency.
+We also set the <code>profile</code> for the account so that all scripts in <code>profile.d</code> directory
+in the home-folder are being read, where we then set the script to read the environment variables.</p>
+<div class="highlight"><span class="filename">home.nix</span><pre><span></span><code>
+</code></pre></div>
+<p>As to having nix in home-manager itself, it is not necessary and
+up to the end user. Having it in there automatically upgrades nix
+on new deployments, and builds it in one go when building
+home-manager but it also makes initial deployment trickier,
+as the first time nix itself has to be uninstalled from the user environment.</p>
+<p>Typical steps for installing this new would be:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># set the PATH explicitly to the installed nix</span>
+<span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="k">$(</span>dirname <span class="k">$(</span>readlink <span class="k">$(</span>which nix<span class="k">)))</span>:<span class="nv">$PATH</span>
+
+<span class="c1"># we remove nix itself that comes pre-installed from the user profile</span>
+nix-env -e nix
+
+<span class="c1"># build the flake for the testuser</span>
+nix build .#testuser
+
+<span class="c1"># run the activate script</span>
+./result/activate
+</code></pre></div>
+<h2 id="discussion">Discussion</h2>
+<p>In the setup before, even after compiling nix with a different state and store
+directory, we still have to load the environment variables for it to work
+reliably. The reason is that home-manager used incorrect directories e.g. for
+lock files if they were not set. Setting the environment variables fixed the issue,
+but I did not track down which particular variable is necessary.</p>
+<p>Another observation is that compilation of nix and libraries works very well, up to minor
+issues like the error in the sandbox tests of nix. I am not sure if this is due to the
+OS where I compiled it (Ubuntu) or due to the custom nix-store paths.</p>
+<p>I had also trouble confirming the new store and state-paths were correctly
+picked up by nix. Commands like <code>nix show-config</code> for example don't list any of
+these directories, making it hard to confirm what they are using (but probably,
+as I am still very new to this, I don't know how to do this correctly).</p>
+<p>I hope this was helpful, but please let me know in the comments below.</p>
+<h2 id="other-resources">Other resources</h2>
+<p>My starting point was a Github repository that compiles nix for HPC at
+<a href="https://github.com/danielbarter/hpc-nix">danielbarter/hpc-nix</a>.</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Home
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../docker/bash_in_docker/" class="md-footer__link md-footer__link--next" aria-label="Next: Bash in Docker" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Bash in Docker
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8aa65030.min.js"></script>
+      
+    
+  </body>
+</html>

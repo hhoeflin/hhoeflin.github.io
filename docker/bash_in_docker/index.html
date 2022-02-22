@@ -1,0 +1,1156 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
+    
+    
+      
+        <title>Bash in Docker - Holger Hoefling's homepage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e8d9bf0c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+
+  
+
+  
+
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-use-bash-in-docker-using-configuration-files" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Holger Hoefling&#39;s homepage" class="md-header__button md-logo" aria-label="Holger Hoefling's homepage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Holger Hoefling's homepage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bash in Docker
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Holger Hoefling&#39;s homepage" class="md-nav__button md-logo" aria-label="Holger Hoefling's homepage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Holger Hoefling's homepage
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Blog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Blog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1">
+          Nix
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Nix" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Nix
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../nix/home_folder_nix/" class="md-nav__link">
+        Nix in home
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_2" type="checkbox" id="__nav_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_2">
+          Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Docker" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Docker
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Bash in Docker
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Bash in Docker
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    Abstract
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-of-shells" class="md-nav__link">
+    Type of shells
+  </a>
+  
+    <nav class="md-nav" aria-label="Type of shells">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#login-shells" class="md-nav__link">
+    Login shells
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-shells" class="md-nav__link">
+    Interactive shells
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    Configuration files
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behaviour-for-sh" class="md-nav__link">
+    Behaviour for sh
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#posix-mode" class="md-nav__link">
+    POSIX mode:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-docker-setup" class="md-nav__link">
+    The docker setup
+  </a>
+  
+    <nav class="md-nav" aria-label="The docker setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bash-as-an-interactive-shell" class="md-nav__link">
+    Bash as an interactive shell
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-non-interactive-bash-shell" class="md-nav__link">
+    The non-interactive bash shell
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bash-as-a-login-shell" class="md-nav__link">
+    Bash as a login shell
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updates" class="md-nav__link">
+    Updates
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../publications/" class="md-nav__link">
+        Publications
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hhoeflin.github.io/online-cv/" target=_blank"" class="md-nav__link">
+        CV
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://www.linkedin.com/in/holger-h%C3%B6fling-96590552/?originalSubdomain=ch" target=_blank"" class="md-nav__link">
+        Linkedin
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Packages
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Packages" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Packages
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_1">
+          mkreports
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="mkreports" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          mkreports
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/hhoeflin/mkreports" target=_blank"" class="md-nav__link">
+        Github
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hhoeflin.github.io/mkreports/" target=_blank"" class="md-nav__link">
+        Docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://pypi.org/project/mkreports/" target=_blank"" class="md-nav__link">
+        Pypi
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_2">
+          hdf5r
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="hdf5r" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_2">
+          <span class="md-nav__icon md-icon"></span>
+          hdf5r
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://hhoeflin.github.io/hdf5r" target=_blank"" class="md-nav__link">
+        Manual
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/hhoeflin/hdf5r" target=_blank"" class="md-nav__link">
+        Source code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://cran.r-project.org/web/packages/hdf5r/index.html" target=_blank"" class="md-nav__link">
+        CRAN
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#abstract" class="md-nav__link">
+    Abstract
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-of-shells" class="md-nav__link">
+    Type of shells
+  </a>
+  
+    <nav class="md-nav" aria-label="Type of shells">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#login-shells" class="md-nav__link">
+    Login shells
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interactive-shells" class="md-nav__link">
+    Interactive shells
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-files" class="md-nav__link">
+    Configuration files
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behaviour-for-sh" class="md-nav__link">
+    Behaviour for sh
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#posix-mode" class="md-nav__link">
+    POSIX mode:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-docker-setup" class="md-nav__link">
+    The docker setup
+  </a>
+  
+    <nav class="md-nav" aria-label="The docker setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bash-as-an-interactive-shell" class="md-nav__link">
+    Bash as an interactive shell
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-non-interactive-bash-shell" class="md-nav__link">
+    The non-interactive bash shell
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bash-as-a-login-shell" class="md-nav__link">
+    Bash as a login shell
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    Summary
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#updates" class="md-nav__link">
+    Updates
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<h1 id="how-to-use-bash-in-docker-using-configuration-files">How to use bash in docker using configuration files</h1>
+<h2 id="abstract">Abstract</h2>
+<p>When using Docker for data science, a particular problem is to ensure
+that the correct environments are loaded at all times, e.g. conda.</p>
+<p>In order to ensure that the environment is loaded correctly at all
+times, it has to be initalized when starting an interactive shell as
+well as when starting a program using a run command.</p>
+<p>In the following we will show that this can best be achieved in 2 ways:
+a) Always start each interactive shell and each run command using a
+login shell. b) For interactive shells define a bashrc-file and set the
+environemnt variable $BASH_ENV to the same file for non-interactive
+shells (e.g. run commands).</p>
+<h2 id="type-of-shells">Type of shells</h2>
+<p>Before we see all this in detail, we first review how the bash shell
+configuration works. For shells, there are two properties that each
+shell has. It is either a <em>login</em> or a <em>non-login</em> shell as well as an
+<em>interactive</em> or <em>non-interactive</em> shell.</p>
+<h3 id="login-shells">Login shells</h3>
+<p>A login shell is typically started when logging into a computer. In it,
+certain startup scripts are sourced that can be used to set the initial
+values for environment varialbles, e.g. PATH. A new bash shell can be
+explicitly turned into a login shell by using the <em>-l</em> or <em>--login</em>
+options.</p>
+<h3 id="interactive-shells">Interactive shells</h3>
+<p>An interactive shell is a shell that has its input, output and error
+streams connected to a terminal. This is typically the case when you
+start a shell inside another shell or when starting a shell in a docker
+container. The typical case of a non-interactive shell is a shell that
+is started in order to run a script. The option <em>-i</em> can be used to
+explicitly turn a shell into an interactive shell.</p>
+<p>In addition to these option there are other switches that can be used to
+customize the behaviour which startup scripts get run and we will go
+over them and their effects later.</p>
+<h2 id="configuration-files">Configuration files</h2>
+<p>There are a number of different configuration files that are sourced in
+different situations. Here an overview of the ones relevant for bash:</p>
+<ul>
+<li><strong>/etc/profile:</strong> This system-wide script is sourced by
+    <em>login</em>-shells at startup before any other files are sourced</li>
+<li><strong>/etc/profile.d:</strong> A system-wide directory from which additional
+    scripts are sourced by <em>login</em> shells. While not formally listed in
+    the GNU manual linked above, most distributions also read all
+    scripts in this directory.</li>
+<li><strong>~/.bash_profile, ~/.bash_login, ~/.profile:</strong> These are scripts
+    for individual users that are read by <em>login</em> shells. Only the first
+    of these scripts that exists and is readable is used. If the option
+    <em>--noprofile</em> is used, none of these scripts is sourced.</li>
+<li><strong>/etc/bashrc or /etc/bash.bashrc:</strong> A system-wide script that is
+    sourced by <em>interactive</em> shells. CentOS uses <em>/etc/bashrc</em> whereas
+    Debian-based systems use <em>/etc/bash.bashrc</em>.</li>
+<li><strong>~/.bashrc:</strong> This user-specific script is sourced for all
+    <em>interactive</em> shells. If the option <em>--norc</em> is used, this file is
+    not being sourced. If the option <em>--rcfile file</em> is being used,
+    <em>file</em> is sourced instead of <em>~/.bashrc</em>.</li>
+<li><strong>$BASH_ENV:</strong> If a non-interactive shell is started and the
+    environment variable <em>BASH_ENV</em> exists, then the script file
+    referenced in <em>BASH_ENV</em> will be sourced.</li>
+</ul>
+<h3 id="behaviour-for-sh">Behaviour for sh</h3>
+<p>When bash is invoked with the name <em>sh</em>, then its behviour changes.</p>
+<ul>
+<li><strong>login:</strong> This behviour occurs when <em>sh</em> is started with the
+    <em>--login</em> option. It sources <em>/etc/profile</em> and <em>~/.profile</em> in this
+    order. The <em>--noprofile</em> prevents this (clarify if it prevents
+    reading of both files or only one of them).</li>
+<li><strong>interactive:</strong> It looks for the environment variable <em>ENV</em> and
+    sources the file referenced here. The option <em>--rcfile</em> has no
+    effect.</li>
+<li><strong>non-interactive:</strong>: No startup files are being sourced.</li>
+</ul>
+<h3 id="posix-mode">POSIX mode:</h3>
+<p>When started in POSIX mode, only the file referenced in the variable
+<em>ENV</em> is sourced. No other files are sourced.</p>
+<h2 id="the-docker-setup">The docker setup</h2>
+<p>The rules for when which configuration files are executed for which
+shell can be quite challenging to remember - at least for users that
+don't use this functionality every day. The setup becomes even more
+challenging when used together with Docker, where it is a priori less
+clear which type of shell is in use at which point.</p>
+<p>In order to make this easier to remember we create a small docker
+container that shows which configuration files are run in which order
+under different conditions.</p>
+<p>In the container, <em>echo</em> commands specifying the name of the file being
+sourced are either - added at the end of the configuration file -
+replace the configuration file with the <em>echo</em> command</p>
+<p>The reason for these two different conditions is that by default some
+configuration files by default source other files and with this setup we
+want to highlight the exact connections between files.</p>
+<h3 id="bash-as-an-interactive-shell">Bash as an interactive shell</h3>
+<p>We can of course also regularly start bash as an interactive shell in
+the docker container usign the <em>-it</em> option for the docker-run command.
+We also specify to docker to log us in as <em>userA</em>.</p>
+<p>In this case, <em>/etc/bash.bashrc</em> and <em>/home/userA/.bashrc</em> are being
+sourced (please note that it doesn't occur as an explicit code-block
+here as the interactive part does not work in a Jupyter notebook).</p>
+<div class="highlight"><pre><span></span><code>docker run -it --user userA hhoeflin/shell_test:bash-append /bin/bash
+
+## Source /etc/bash.bashrc
+## Source /home/userA/.bashrc
+## userA@55411b7d527f:/$ exit
+</code></pre></div>
+<p>Another option to start an interactive shell is the <em>-i</em> option to bash.
+This cannot be combined with the bash <em>-c</em> option to run a command
+passed as a string, but we can use it when executing a script. However
+this results in an error</p>
+<div class="highlight"><pre><span></span><code>docker run --user userA hhoeflin/shell_test:bash-append /bin/bash -i /home/userA/script.sh
+
+## bash: cannot set terminal process group (-1): Inappropriate ioctl for device
+## bash: no job control in this shell
+## Source /etc/bash.bashrc
+## Source /home/userA/.bashrc
+## /home/userA
+</code></pre></div>
+<p>In this case, instead of <em>/etc/bash.bashrc</em> and <em>/home/userA/.bashrc</em>,
+we can force a specific file to be used with the <em>--rcfile</em> option. We
+can also ensure that for interactive shells, no configuration script is
+loaded with <em>--norc</em>.</p>
+<h3 id="the-non-interactive-bash-shell">The non-interactive bash shell</h3>
+<p>Instead of the interactive shell, we however usually when running a
+container are being dropped into a non-interactive, non-login shell.</p>
+<div class="highlight"><pre><span></span><code>docker run hhoeflin/shell_test:bash-append /bin/bash
+</code></pre></div>
+<p>As we can see, this sources no files at all. But when we now set the
+<em>BASH_ENV</em> variable to <em>/etc/profile</em>, we see that the script gets
+loaded - together with the script file in <em>/etc/profile.d</em>.</p>
+<div class="highlight"><pre><span></span><code>docker run -e BASH_ENV=/etc/profile hhoeflin/shell_test:bash-append /bin/bash
+
+## Source /etc/profile.d/test.sh
+## Source /etc/profile
+</code></pre></div>
+<p>Strictly speaking the script in <em>/etc/profile.d</em> should not have been
+loaded - at least we did not explicitly ask for it. The reason is that
+all script in <em>/etc/profile.d</em> get sourced by the default
+<em>/etc/profile</em>. We confirm this by running the same command, but this
+time using the version of the configuration scripts that got replaced
+with the echo commands - not appended to.</p>
+<div class="highlight"><pre><span></span><code>docker run -e BASH_ENV=/etc/profile hhoeflin/shell_test:bash-replace /bin/bash
+
+## Source /etc/profile
+</code></pre></div>
+<h3 id="bash-as-a-login-shell">Bash as a login shell</h3>
+<p>When running bash, we can ask for it to be a login shell using the <em>-l</em>
+or <em>--login</em> option.</p>
+<div class="highlight"><pre><span></span><code>docker run hhoeflin/shell_test:bash-append /bin/bash --login
+
+## Source /etc/profile.d/test.sh
+## Source /etc/profile
+</code></pre></div>
+<p>and all the profile-related scripts get sourced. When at the same time
+we pass the <em>--noprofile</em> option</p>
+<div class="highlight"><pre><span></span><code>docker run hhoeflin/shell_test:bash-append /bin/bash --login --noprofile
+</code></pre></div>
+<p>it prevents any profile scripts from being loaded.</p>
+<p>Now this was all so far for the root user. We can also do this for any
+other user</p>
+<div class="highlight"><pre><span></span><code>docker run --user userA hhoeflin/shell_test:bash-append /bin/bash --login
+
+## Source /etc/profile.d/test.sh
+## Source /etc/profile
+## Source /home/userA/.bash_profile
+</code></pre></div>
+<p>in which case <em>~/.bash_profile</em> gets loaded, as this is the first
+user-specific configuration file. For <em>userB</em> and <em>userC</em>, we can see
+similar results, just with their user-specific config files. For <em>userD</em>
+that has all 3 profile-configuration files, ony the first,
+<em>~/.bash_profile</em> gets loaded.</p>
+<h2 id="summary">Summary</h2>
+<p>We have seen how to use login shell and interactive/non-interactive
+shells in a Docker container. If the goal is to have a specific script
+run in interactive shells and non-interactive shells executing a
+command, then there are basically 2 choices to make this happen.</p>
+<p>The first choice is to make interactive shells as well as
+non-interactive shells both login shells and put the script that should
+be executed into either <em>/etc/profile.d</em> if it should be run for all
+users or into <em>~/.profile</em> if it is intended for a specific user. This
+however requires to set the <em>-l</em> option on all shells that are run.</p>
+<p>The second option is to set the script as <em>/etc/bash.bashrc</em> (or
+<em>/etc/bashrc</em> on CentOS). In this case, this will automatically be run
+for all interactive shells. For non-interactive shells, the <em>BASH_ENV</em>
+variable pointing to this file would ensure that it is sourced in this
+case as well.</p>
+<p>Overall, requiring users to always request a login shell and not include
+any <em>bashrc</em> files is overall a bit more consistent in my opinion.</p>
+<h2 id="references">References</h2>
+<p>In order to compile this Dockerfile and writeup I used various sources
+on the internet.
+- A good introduction to the subject is <a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">GNU - Bash Startup Files</a>.
+- Another very nice post is <a href="https://transang.me/bash-interactive-login-shells/">Bash interactive, login shell types</a>
+- <a href="https://www.pcwdld.com/bash-cheat-sheet">Bash cheat sheet</a> (thanks to Marc Wilson for the link).</p>
+<h2 id="updates">Updates</h2>
+<ul>
+<li>Added bash cheat-sheet on Dec 28th 2021 on suggestion of Marc Wilson.</li>
+</ul>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../nix/home_folder_nix/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Nix in home" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Nix in home
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../publications/" class="md-footer__link md-footer__link--next" aria-label="Next: Publications" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Publications
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8aa65030.min.js"></script>
+      
+    
+  </body>
+</html>

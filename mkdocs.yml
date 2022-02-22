@@ -1,0 +1,42 @@
+markdown_extensions:
+- meta
+- admonition
+- pymdownx.extra
+- pymdownx.details
+- pymdownx.superfences
+- pymdownx.snippets
+- pymdownx.highlight:
+    use_pygments: true
+- pymdownx.tabbed:
+    alternate_style: true
+
+nav:
+- Home: index.md
+- Blog:
+    - Nix:
+        - 'Nix in home': 'nix/home_folder_nix.md'
+    - Docker:
+        - 'Bash in Docker': 'docker/bash_in_docker.md'
+- About:
+    - Publications: 'publications.md'
+    - CV: 'https://hhoeflin.github.io/online-cv/" target=_blank"'
+    - Linkedin: 'https://www.linkedin.com/in/holger-h%C3%B6fling-96590552/?originalSubdomain=ch" target=_blank"'
+- Packages:
+    - mkreports:
+        - Github: 'https://github.com/hhoeflin/mkreports" target=_blank"'
+        - Docs: 'https://hhoeflin.github.io/mkreports/" target=_blank"'
+        - Pypi: 'https://pypi.org/project/mkreports/" target=_blank"'
+    - hdf5r:
+        - Manual: 'https://hhoeflin.github.io/hdf5r" target=_blank"'
+        - 'Source code': 'https://github.com/hhoeflin/hdf5r" target=_blank"'
+        - CRAN: 'https://cran.r-project.org/web/packages/hdf5r/index.html" target=_blank"'
+
+
+plugins:
+- search
+
+site_name: Holger Hoefling's homepage
+
+theme:
+  custom_dir: overrides
+  name: material

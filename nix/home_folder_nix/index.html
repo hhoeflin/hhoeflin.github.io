@@ -10,7 +10,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.9">
     
     
       
@@ -18,7 +18,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.e8d9bf0c.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2b4465f4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -885,7 +885,6 @@
               
                 
 
-
 <h1 id="nix-and-home-manager-in-custom-directory">Nix and Home-manager in custom directory</h1>
 <h2 id="introduction">Introduction</h2>
 <p>A few months ago I was looking for a way to create a setup for
@@ -962,7 +961,13 @@ following it is assumed that a nix installation is available with nix version &g
 <p>In order to install in a custom location, it is possible to change
 the directories used by Nix with environment variables. These need
 to be sourced before the build process.</p>
-<div class="highlight"><span class="filename">nix_vars.sh</span><pre><span></span><code>
+<div class="highlight"><span class="filename">nix_vars.sh</span><pre><span></span><code>PREFIX=/home/testuser
+export NIX_STORE_DIR=${PREFIX}/nix/store
+export NIX_DATA_DIR=${PREFIX}/nix/share
+export NIX_LOG_DIR=${PREFIX}/nix/var/log/nix
+export NIX_STATE_DIR=${PREFIX}/nix/var/nix
+export NIX_CONF_DIR=${PREFIX}/nix/etc/nix
+NIX_PROFILES=&quot;${NIX_STATE_DIR}/profiles/default ${PREFIX}/.nix-profile&quot;
 </code></pre></div>
 <p>This corresponds to a nix installation where <code>storedir=${PREFIX}/nix/store</code>,
 <code>localstatedir=${PREFIX}/nix/var/</code> and <code>sysconfdir=${PREFIX}/nix/etc</code>, where
@@ -976,10 +981,50 @@ and the details for the environment variables in
 flake we need to override some attributes in order to set the custom
 variables as well as add some patches (on linux, the sandbox test is broken
 for non-default directories, so we disable it). A basic flake could be</p>
-<div class="highlight"><span class="filename">flake.nix</span><pre><span></span><code>
+<div class="highlight"><span class="filename">flake.nix</span><pre><span></span><code><span class="p">{</span>
+  <span class="ss">inputs =</span> <span class="p">{</span>
+    flake-utils<span class="o">.</span><span class="ss">url =</span> <span class="s2">&quot;github:numtide/flake-utils&quot;</span><span class="p">;</span>
+  <span class="p">};</span>
+  <span class="ss">outputs =</span> <span class="p">{</span>self<span class="p">,</span> nixpkgs<span class="p">,</span> flake-utils<span class="p">}:</span>
+    <span class="k">let</span>
+      <span class="ss">overlay-nix =</span> final<span class="p">:</span> prev<span class="p">:</span>
+        <span class="k">let</span> <span class="ss">prefix =</span> <span class="s2">&quot;/home/testuser/nix&quot;</span><span class="p">;</span>
+        <span class="k">in</span>
+        <span class="p">{</span>
+          <span class="ss">nix_prefix =</span> <span class="p">(</span>prev<span class="o">.</span>nix<span class="o">.</span>override <span class="p">{</span>
+            <span class="ss">storeDir =</span> <span class="s2">&quot;</span><span class="si">${</span>prefix<span class="si">}</span><span class="s2">/store&quot;</span><span class="p">;</span>
+            <span class="ss">stateDir =</span> <span class="s2">&quot;</span><span class="si">${</span>prefix<span class="si">}</span><span class="s2">/var&quot;</span><span class="p">;</span>
+            <span class="ss">confDir =</span> <span class="s2">&quot;</span><span class="si">${</span>prefix<span class="si">}</span><span class="s2">/etc&quot;</span><span class="p">;</span>
+          <span class="p">})</span><span class="o">.</span>overrideAttrs <span class="p">(</span>oldAttrs<span class="p">:</span> <span class="k">rec</span> <span class="p">{</span>
+            <span class="ss">patches =</span> <span class="p">(</span>oldAttrs<span class="o">.</span>patches <span class="ow">or</span> <span class="p">[])</span> <span class="o">++</span> <span class="p">[</span><span class="o">.</span><span class="l">/nix_patch_2_5.patch</span><span class="p">];</span>
+          <span class="p">});</span>
+        <span class="p">};</span>
+    <span class="k">in</span>
+    flake-utils<span class="o">.</span>lib<span class="o">.</span>eachDefaultSystem
+      <span class="p">(</span>system<span class="p">:</span>
+        <span class="k">let</span> <span class="ss">pkgs =</span> <span class="nb">import</span> nixpkgs <span class="p">{</span><span class="ss">overlays =</span> <span class="p">[</span>overlay-nix<span class="p">];</span> <span class="k">inherit</span> system<span class="p">;};</span> <span class="k">in</span>
+        <span class="p">{</span>
+          packages<span class="o">.</span><span class="ss">nix =</span> pkgs<span class="o">.</span>nix_prefix<span class="p">;</span>
+        <span class="p">}</span>
+      <span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>with patch</p>
-<div class="highlight"><span class="filename">nix_patch_2_5.patch</span><pre><span></span><code>
+<div class="highlight"><span class="filename">nix_patch_2_5.patch</span><pre><span></span><code>diff --git a/tests/common.sh.in b/tests/common.sh.in
+index 61abab1d7..3947db160 100644
+--- a/tests/common.sh.in
++++ b/tests/common.sh.in
+@@ -119,10 +119,6 @@ restartDaemon() {
+   startDaemon
+ }
+
+-if [[ $(uname) == Linux ]] &amp;&amp; [[ -L /proc/self/ns/user ]] &amp;&amp; unshare --user true; then
+-    _canUseSandbox=1
+-fi
+-
+ isDaemonNewer () {
+   [[ -n &quot;${NIX_DAEMON_PACKAGE:-}&quot; ]] || return 0
+   local requiredVersion=&quot;$1&quot;
 </code></pre></div>
 <p>With this flake, we can just build a version of nix with
 <code>nix build .#nix</code>.</p>
@@ -989,18 +1034,128 @@ to set this up is below, together with a minimal <code>home.nix</code> that
 just requires <code>nix</code> itself and ensures the environment  variables
 are loaded in the profile. As of this writing, the current version
 of nix was 2.5.1.</p>
-<p><div class="highlight"><span class="filename">flake.nix</span><pre><span></span><code>
+<p><div class="highlight"><span class="filename">flake.nix</span><pre><span></span><code>{
+  description = &quot;Home Manager NixOS configuration&quot;;
+
+  inputs = {
+    home-manager.url = &quot;github:nix-community/home-manager&quot;;
+    home-manager.inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+  };
+  outputs = inputs@{ self, nixpkgs, home-manager, ... }:
+    {
+      homeConfigurations = {
+        testuser = inputs.home-manager.lib.homeManagerConfiguration {
+          system = &quot;x86_64-linux&quot;;
+          # Home Manager needs a bit of information about you and the
+          # paths it should manage.
+          homeDirectory = &quot;/home/testuser&quot;;
+          username = &quot;testuser&quot;;
+          # This value determines the Home Manager release that your
+          # configuration is compatible with. This helps avoid breakage
+          # when a new Home Manager release introduces backwards
+          # incompatible changes.
+          # You can update Home Manager without changing this value. See
+          # the Home Manager release notes for a list of state version
+          # changes in each release.
+          stateVersion = &quot;21.11&quot;;
+
+          configuration = { config, pkgs, ... }:
+            let
+              overlay-nix = final: prev:
+                let prefix = &quot;/home/testuser/nix&quot;;
+                in
+            {
+                  nix_2_3 = (prev.nix_2_3.override {
+                    storeDir = &quot;${prefix}/store&quot;;
+                    stateDir = &quot;${prefix}/var&quot;;
+                    confDir = &quot;${prefix}/etc&quot;;
+                  }).overrideAttrs (oldAttrs: rec {
+                    patches = (oldAttrs.patches or []) ++ [./nix_patch_2_3.patch];
+                  });
+                  nix = (prev.nix.override {
+                    storeDir = &quot;${prefix}/store&quot;;
+                    stateDir = &quot;${prefix}/var&quot;;
+                    confDir = &quot;${prefix}/etc&quot;;
+                  }).overrideAttrs (oldAttrs: rec {
+                    patches = (oldAttrs.patches or []) ++ [./nix_patch_2_5.patch];
+                  });
+              };
+            in
+            {
+              nixpkgs.overlays = [ overlay-nix];
+              nixpkgs.config = {
+                allowUnfree = true;
+                allowBroken = true;
+              };
+
+              imports = [
+                ./home.nix
+              ];
+
+            };
+        };
+      };
+      testuser = self.homeConfigurations.testuser.activationPackage;
+      defaultPackage.x86_64-linux = self.testuser;
+    };
+}
 </code></pre></div>
 As home-manager depends on nix-2.3, we also create a patch that disables
 sandbox testing for that version.</p>
-<div class="highlight"><span class="filename">nix_patch_2_3.patch</span><pre><span></span><code>
+<div class="highlight"><span class="filename">nix_patch_2_3.patch</span><pre><span></span><code>diff --git a/tests/common.sh.in b/tests/common.sh.in
+index 15d7b1ef9..9e2242ac4 100644
+--- a/tests/common.sh.in
++++ b/tests/common.sh.in
+@@ -86,10 +86,6 @@ killDaemon() {
+     trap &quot;&quot; EXIT
+ }
+
+-if [[ $(uname) == Linux ]] &amp;&amp; [[ -L /proc/self/ns/user ]] &amp;&amp; unshare --user true; then
+-    _canUseSandbox=1
+-fi
+-
+ canUseSandbox() {
+     if [[ ! $_canUseSandbox ]]; then
+         echo &quot;Sandboxing not supported, skipping this test...&quot;
 </code></pre></div>
 <p>For defining the home-folder environment itself, we need a <code>home.nix</code> file
 that we import in the configuration. This one is quite minimal, defining
 <code>nix</code> itself as the only read dependency.
 We also set the <code>profile</code> for the account so that all scripts in <code>profile.d</code> directory
 in the home-folder are being read, where we then set the script to read the environment variables.</p>
-<div class="highlight"><span class="filename">home.nix</span><pre><span></span><code>
+<div class="highlight"><span class="filename">home.nix</span><pre><span></span><code>{ config, pkgs, ... }:
+
+{
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
+  home.packages = with pkgs; [
+    # we want nix itself to be installed by home-manager
+    nix
+
+  ];
+
+  programs.bash = {
+    enable = true;
+    profileExtra = &#39;&#39;
+      . $HOME/.nix-profile/etc/profile.d/nix.sh
+
+      if [ -d $HOME/profile.d ]; then
+        for i in $HOME/profile.d/*.sh; do
+          if [ -r $i ]; then
+            . $i
+          fi
+        done
+        unset i
+      fi
+
+
+    &#39;&#39;;
+  };
+  # load the nix-vars to configure correctly
+  home.file.&quot;profile.d/nix_vars.sh&quot;.source = ./nix_vars.sh;
+
+}
 </code></pre></div>
 <p>As to having nix in home-manager itself, it is not necessary and
 up to the end user. Having it in there automatically upgrades nix
@@ -1102,10 +1257,10 @@ as I am still very new to this, I don't know how to do this correctly).</p>
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.22074ed6.min.js"}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8aa65030.min.js"></script>
+      <script src="../../assets/javascripts/bundle.960e086b.min.js"></script>
       
     
   </body>

@@ -35,7 +35,7 @@ type <application>/<version>.
 
 For `Rust`-based apps, typically it is enough to use a single standard makefile that is 
 configured only using environment variables 
-(see [rust_app](https://github.com/hhoeflin/machine_setup/tree/master/makefiles/default.mk)).
+(see [rust_app](https://github.com/hhoeflin/machine_setup/tree/master/makefiles/rust_app)).
 Similary I use application written in `Golang` with a single recipe. From this mechanism
 I deviate for things like `exa`, an `ls` replacement, as there additional aliases are defined
 in the `module_template` file and it therefore needs further customization that the simple recipe

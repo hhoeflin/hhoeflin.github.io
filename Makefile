@@ -1,5 +1,9 @@
+.ONESHELL:
+SHELL:=/bin/bash
+
 .PHONY: create-env
 
 create-env:
-	conda create -y -p ./conda_env python=3.9 && \
+	mamba create -y -p ./conda_env python=3.11
+	mamba activate ./conda_env
 	pip install mkdocs mkdocs-material pymdown-extensions

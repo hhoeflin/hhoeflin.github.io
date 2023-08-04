@@ -1,5 +1,7 @@
 # Nix and Home-manager in custom directory
 
+_February 2022_
+
 ## Introduction
 
 A few months ago I was looking for a way to create a setup for

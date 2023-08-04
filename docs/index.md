@@ -19,13 +19,19 @@ imaging applications.
 
 ## Blog entries
 
-### [Nix in home folder](nix/home_folder_nix.md)
+### [Devtools setup using make](blog/devtools_with_make.md)
+
+Description of an simple, lightweight setup for installing
+development tools in a reproducible manner in the home-folder 
+without the use of sudo-rights.
+
+### [Nix in home folder](blog/home_folder_nix.md)
 
 How to compile nix for use in a custom location on systems
 where the user doesn't have root is and user-namespaces
 are not available as well.
 
-### [Bash in docker](docker/bash_in_docker.md)
+### [Bash in docker](blog/bash_in_docker.md)
 
 How to use bash inside docker, especially with repect to
 interactive as well as login shells.

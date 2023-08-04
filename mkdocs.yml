@@ -13,10 +13,9 @@ markdown_extensions:
 nav:
 - Home: index.md
 - Blog:
-    - Nix:
-        - 'Nix in home': 'nix/home_folder_nix.md'
-    - Docker:
-        - 'Bash in Docker': 'docker/bash_in_docker.md'
+    - 'Devtools with make': 'blog/devtools_with_make.md'
+    - 'Nix in home': 'blog/home_folder_nix.md'
+    - 'Bash in Docker': 'blog/bash_in_docker.md'
 - About:
     - Publications: 'publications.md'
     - CV: 'https://hhoeflin.github.io/online-cv/" target=_blank"'

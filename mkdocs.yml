@@ -13,8 +13,10 @@ markdown_extensions:
 nav:
 - Home: index.md
 - Blog:
-    - 'Devtools with make': 'blog/devtools_with_make.md'
-    - 'Nix in home': 'blog/home_folder_nix.md'
+    - devtools:
+        - 'Devtools with spack': 'blog/devtools/using_spack.md'
+        - 'Devtools with make': 'blog/devtools/using_make.md'
+        - 'Devtools with nix': 'blog/devtools/using_nix.md'
     - 'Bash in Docker': 'blog/bash_in_docker.md'
 - About:
     - Publications: 'publications.md'

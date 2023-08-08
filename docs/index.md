@@ -19,13 +19,18 @@ imaging applications.
 
 ## Blog entries
 
-### [Devtools setup using make](blog/devtools_with_make.md)
+### [Devtools setup using spack](blog/devtools/using_spack.md)
+
+Investigation of using _Spack_ as a tool to set up a local
+development environment.
+
+### [Devtools setup using make](blog/devtools/using_make.md)
 
 Description of an simple, lightweight setup for installing
 development tools in a reproducible manner in the home-folder 
 without the use of sudo-rights.
 
-### [Nix in home folder](blog/home_folder_nix.md)
+### [Devtools using Nix](blog/devtools/using_nix.md)
 
 How to compile nix for use in a custom location on systems
 where the user doesn't have root is and user-namespaces

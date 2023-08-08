@@ -4,7 +4,7 @@ _August 2023_
 
 ## Introduction
 
-In a previous post in [Nix in home folder](./home_folder_nix.md) I talked about how to set up 
+In a previous post in [Nix in home folder](./using_nix.md) I talked about how to set up 
 development tools in ones home-folder without root using the Nix package manager. While that affords
 very high reproducibility, it also required a large amount of maintenance as well as time for compiling
 the tools. For practical purposes, this turned out not to be feasible in the cases where needed most 
